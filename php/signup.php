@@ -5,10 +5,11 @@ $password = "root";
 $dbname = "user_accounts";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new MongoClient("mongodb://$username:$password@$servername:27017");
+$db = $conn->$dbname;
 
 // Check connection
-if ($conn->connect_error) {
+if (!$conn) {
     die("Connection failed: " . $conn->connect_error);
 }
 
@@ -16,16 +17,19 @@ $name = $_POST['name'];
 $email = $_POST['email'];
 $password = $_POST['password'];
 
-// Prepare and bind the statement to prevent SQL injection
-$stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-$stmt->bind_param("sss", $name, $email, $password);
+// Create a new user document
+$user = array(
+    "name" => $name,
+    "email" => $email,
+    "password" => $password
+);
 
-if ($stmt->execute() === TRUE) {
+// Insert the user document into the users collection
+$result = $db->users->insertOne($user);
+
+if ($result->getInsertedCount() > 0) {
     echo "<script>alert('User registered successfully!'); window.history.go(-1);</script>";
 } else {
-    echo "Error: " . $stmt->error;
+    echo "Error: User registration failed.";
 }
-
-$stmt->close();
-$conn->close();
 ?>
