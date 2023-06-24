@@ -5,10 +5,11 @@ $password = "root";
 $dbname = "user_accounts";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new MongoClient("mongodb://$username:$password@$servername:27017");
+$db = $conn->$dbname;
 
 // Check connection
-if ($conn->connect_error) {
+if (!$conn) {
     die("Connection failed: " . $conn->connect_error);
 }
 
@@ -17,22 +18,17 @@ $password = $_POST['password'];
 if (empty($email) || empty($password)) {
     echo "<script>alert('Please enter both email and password!'); window.history.go(-1);</script>";
 } else {
-// Prepare and bind the statement to prevent SQL injection
-$stmt = $conn->prepare("SELECT * FROM users WHERE email = ? AND password = ?");
-$stmt->bind_param("ss", $email, $password);
-$stmt->execute();
-$result = $stmt->get_result();
+    // Find the user document with matching email and password
+    $query = array("email" => $email, "password" => $password);
+    $user = $db->users->findOne($query);
 
-if ($result->num_rows > 0) {
-    // User logged in successfully
-    header("Location: ../register.html");
-    exit();
-} else {
-    // Incorrect email/password
-    echo "<script>alert('Incorrect email or password!'); window.history.go(-1);</script>";
-}
-
-$stmt->close();
-$conn->close();
+    if ($user) {
+        // User logged in successfully
+        header("Location: ../register.html");
+        exit();
+    } else {
+        // Incorrect email/password
+        echo "<script>alert('Incorrect email or password!'); window.history.go(-1);</script>";
+    }
 }
 ?>
