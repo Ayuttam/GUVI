@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Profile</title>
+  <link rel="stylesheet" type="text/css" href="./css/style.css">
+</head>
+<body>
+  <div class="profile-page">
+    <div class="form">
+      <h1>User Profile</h1>
+      <form id="profile-form" action="./php/profile.php" method="POST">
+        <input type="text" id="name" name="name" placeholder="Name" readonly required/>
+        <input type="number" id="age" name="age" placeholder="Age" readonly required/>
+        <input type="date" id="dob" name="dob" placeholder="Date of Birth" readonly required/>
+        <input type="text" id="contact" name="contact" placeholder="Contact" readonly required/>
+        <button type="button" id="edit-btn">Edit</button>
+        <button type="button" id="cancel-btn" style="display: none;">Cancel</button>
+        <button type="submit" id="save-btn" style="display: none;">Save</button>
+      </form>
+      <a href="loginsignup.html">Sign Out</a>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="./js/profile.js"></script>
+</body>
+</html>
