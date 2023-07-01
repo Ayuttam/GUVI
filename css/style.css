@@ -6,6 +6,12 @@
   margin: auto;
 }
 
+.signup-page {
+  width: 360px;
+  padding: 8% 0 0;
+  margin: auto;
+}
+
 .registration-page {
   width: 360px;
   padding: 8% 0 0;
@@ -100,6 +106,11 @@
 
 .form .register-form {
   display: none;
+}
+
+.error {
+  color: red;
+  font-style: italic;
 }
 
 .container {
