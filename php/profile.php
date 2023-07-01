@@ -5,11 +5,12 @@ $password = "root";
 $dbname = "user_accounts";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new MongoClient("mongodb://$username:$password@$servername:27017");
+$db = $conn->$dbname;
 
 // Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if (!$conn) {
+    die("MongoDB connection failed.");
 }
 
 // Generate a unique random integer ID
